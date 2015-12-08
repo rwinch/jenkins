@@ -26,7 +26,7 @@ package hudson.model.queue;
 import hudson.model.Queue.Item;
 import hudson.model.Queue.Task;
 import hudson.security.ACL;
-import org.acegisecurity.Authentication;
+import org.springframework.security.core.Authentication;
 
 import java.util.Collection;
 import java.util.Collections;

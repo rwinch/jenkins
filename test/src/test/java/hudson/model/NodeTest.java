@@ -47,7 +47,7 @@ import java.util.concurrent.Callable;
 
 import jenkins.model.Jenkins;
 import jenkins.security.QueueItemAuthenticatorConfiguration;
-import org.acegisecurity.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import static org.junit.Assert.*;
 
 import org.junit.Before;

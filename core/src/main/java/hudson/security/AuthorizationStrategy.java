@@ -38,7 +38,7 @@ import javax.annotation.Nonnull;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 
-import org.acegisecurity.Authentication;
+import org.springframework.security.core.Authentication;
 import org.kohsuke.stapler.StaplerRequest;
 
 /**

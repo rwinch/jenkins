@@ -64,7 +64,7 @@ import javax.annotation.Nonnull;
 import jenkins.model.Jenkins;
 import jenkins.util.io.OnMaster;
 import net.sf.json.JSONObject;
-import org.acegisecurity.Authentication;
+import org.springframework.security.core.Authentication;
 import org.jvnet.localizer.Localizable;
 import org.kohsuke.stapler.BindInterceptor;
 import org.kohsuke.stapler.Stapler;

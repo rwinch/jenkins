@@ -2,7 +2,7 @@ package jenkins.security;
 
 import hudson.ExtensionList;
 import hudson.ExtensionPoint;
-import org.acegisecurity.Authentication;
+import org.springframework.security.core.Authentication;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

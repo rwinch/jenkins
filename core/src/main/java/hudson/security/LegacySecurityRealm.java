@@ -23,9 +23,9 @@
  */
 package hudson.security;
 
-import org.acegisecurity.AuthenticationManager;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.AuthenticationException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.context.WebApplicationContext;
 import org.kohsuke.stapler.StaplerRequest;
 import groovy.lang.Binding;

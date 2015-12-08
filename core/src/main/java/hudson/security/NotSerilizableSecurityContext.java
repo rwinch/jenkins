@@ -25,7 +25,7 @@
 package hudson.security;
 
 import jenkins.security.NonSerializableSecurityContext;
-import org.acegisecurity.Authentication;
+import org.springframework.security.core.Authentication;
 
 /**
  * @deprecated use {@link NonSerializableSecurityContext} instead

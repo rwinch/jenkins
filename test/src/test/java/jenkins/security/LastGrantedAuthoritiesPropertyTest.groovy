@@ -3,13 +3,13 @@ package jenkins.security
 import hudson.security.AbstractPasswordBasedSecurityRealm
 import hudson.security.GroupDetails
 import hudson.security.UserMayOrMayNotExistException
-import org.acegisecurity.AuthenticationException
-import org.acegisecurity.BadCredentialsException
-import org.acegisecurity.GrantedAuthority
-import org.acegisecurity.GrantedAuthorityImpl
-import org.acegisecurity.userdetails.User
-import org.acegisecurity.userdetails.UserDetails
-import org.acegisecurity.userdetails.UsernameNotFoundException
+import org.springframework.security.core.AuthenticationException
+import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.junit.Rule
 import org.junit.Test
 import org.jvnet.hudson.test.JenkinsRule
@@ -64,7 +64,7 @@ class LastGrantedAuthoritiesPropertyTest {
         protected UserDetails authenticate(String username, String password) throws AuthenticationException {
             if (password=="error")
                 throw new BadCredentialsException(username);
-            def authorities = password.split(":").collect { new GrantedAuthorityImpl(it) }
+            def authorities = password.split(":").collect { new SimpleGrantedAuthority(it) }
 
             return new User(username,"",true,authorities.toArray(new GrantedAuthority[0]))
         }

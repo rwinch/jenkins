@@ -1,20 +1,20 @@
 /*
  * The MIT License
- * 
+ *
  * Copyright (c) 2004-2010, Sun Microsystems, Inc., Kohsuke Kawaguchi,
  * Yahoo! Inc., Stephen Connolly, Tom Huybrechts, Alan Harder, Manufacture
  * Francaise des Pneumatiques Michelin, Romain Seguy
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -133,7 +133,7 @@ import jenkins.model.Jenkins;
 import jenkins.model.ModelObjectWithChildren;
 import jenkins.model.ModelObjectWithContextMenu;
 
-import org.acegisecurity.providers.anonymous.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.JellyTagException;
 import org.apache.commons.jelly.Script;
@@ -191,7 +191,7 @@ public class Functions {
     public static boolean isModelWithChildren(Object o) {
         return o instanceof ModelObjectWithChildren;
     }
-    
+
     @Deprecated
     public static boolean isMatrixProject(Object o) {
         return o != null && o.getClass().getName().equals("hudson.matrix.MatrixProject");
@@ -460,7 +460,7 @@ public class Functions {
     public static boolean isWindows() {
         return File.pathSeparatorChar==';';
     }
-    
+
     public static boolean isGlibcSupported() {
         try {
             GNUCLibrary.LIBC.getpid();
@@ -640,7 +640,7 @@ public class Functions {
     public static boolean isCollapsed(String paneId) {
     	return PaneStatusProperties.forCurrentUser().isCollapsed(paneId);
     }
-    
+
     /**
      * Finds the given object in the ancestor list and returns its URL.
      * This is used to determine the "current" URL assigned to the given object,
@@ -754,7 +754,7 @@ public class Functions {
     public static void checkPermission(Object object, Permission permission) throws IOException, ServletException {
         if (permission == null)
             return;
-        
+
         if (object instanceof AccessControlled)
             checkPermission((AccessControlled) object,permission);
         else {
@@ -997,7 +997,7 @@ public class Functions {
             }
         });
     }
-    
+
     private static class Tag implements Comparable<Tag> {
         double ordinal;
         String hierarchy;
@@ -1089,20 +1089,20 @@ public class Functions {
             i = (Item) ig;
         }
     }
-    
+
     private static String normalizeURI(String uri) {
         return URI.create(uri).normalize().toString();
     }
-    
+
     /**
      * Gets all the {@link TopLevelItem}s recursively in the {@link ItemGroup} tree.
-     * 
+     *
      * @since 1.512
      */
     public static List<TopLevelItem> getAllTopLevelItems(ItemGroup root) {
       return Items.getAllItems(root, TopLevelItem.class);
     }
-    
+
     /**
      * Gets the relative name or display name to the given item from the specified group.
      *
@@ -1117,7 +1117,7 @@ public class Functions {
         if (p == null) return null;
         if (g == null) return useDisplayName ? p.getFullDisplayName() : p.getFullName();
         String separationString = useDisplayName ? " » " : "/";
-        
+
         // first list up all the parents
         Map<ItemGroup,Integer> parents = new HashMap<ItemGroup,Integer>();
         int depth=0;
@@ -1151,7 +1151,7 @@ public class Functions {
                 return null;
         }
     }
-    
+
     /**
      * Gets the name to the given item relative to given group.
      *
@@ -1163,9 +1163,9 @@ public class Functions {
      */
     public static String getRelativeNameFrom(Item p, ItemGroup g) {
         return getRelativeNameFrom(p, g, false);
-    }    
-    
-    
+    }
+
+
     /**
      * Gets the relative display name to the given item from the specified group.
      *
@@ -1410,7 +1410,7 @@ public class Functions {
     /**
      * Gets info about the specified {@link Throwable}.
      * @param t Input {@link Throwable}
-     * @return If {@link Throwable} is not null, a summary info with the 
+     * @return If {@link Throwable} is not null, a summary info with the
      *      stacktrace will be returned. Otherwise, the method returns a default
      *      &quot;No exception details&quot; string.
      */
@@ -1648,11 +1648,11 @@ public class Functions {
      * Gets all the {@link PageDecorator}s.
      */
     public static List<PageDecorator> getPageDecorators() {
-        // this method may be called to render start up errors, at which point Hudson doesn't exist yet. see HUDSON-3608 
+        // this method may be called to render start up errors, at which point Hudson doesn't exist yet. see HUDSON-3608
         if(Jenkins.getInstance()==null)  return Collections.emptyList();
         return PageDecorator.all();
     }
-    
+
     public static List<Descriptor<Cloud>> getCloudDescriptors() {
         return Cloud.all();
     }
@@ -1752,7 +1752,7 @@ public class Functions {
     public List filterDescriptors(Object context, Iterable descriptors) {
         return DescriptorVisibilityFilter.apply(context,descriptors);
     }
-    
+
     /**
      * Returns true if we are running unit tests.
      */
@@ -1797,7 +1797,7 @@ public class Functions {
     public static String getCurrentDescriptorByNameUrl() {
         return Descriptor.getCurrentDescriptorByNameUrl();
     }
-    
+
     public static String setCurrentDescriptorByNameUrl(String value) {
         String o = getCurrentDescriptorByNameUrl();
         Stapler.getCurrentRequest().setAttribute("currentDescriptorByNameUrl", value);
@@ -1854,11 +1854,11 @@ public class Functions {
     public String getUserAvatar(User user, String avatarSize) {
         return getAvatar(user,avatarSize);
     }
-    
-    
+
+
     /**
      * Returns human readable information about file size
-     * 
+     *
      * @param size file size in bytes
      * @return file size in appropriate unit
      */

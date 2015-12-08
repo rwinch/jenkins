@@ -7,7 +7,7 @@ import java.io.ByteArrayOutputStream;
 import hudson.console.AnnotatedLargeText;
 import hudson.security.ACL;
 import hudson.security.Permission;
-import org.acegisecurity.Authentication;
+import org.springframework.security.core.Authentication;
 import org.junit.Test;
 
 /**

@@ -32,7 +32,7 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.acegisecurity.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.junit.Rule;
 import org.jvnet.hudson.test.JenkinsRule;
 import static org.junit.Assert.*;

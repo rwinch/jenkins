@@ -24,12 +24,12 @@
 package jenkins.security;
 
 import jenkins.util.InterceptingExecutorService;
-import org.acegisecurity.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContext;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
-import static org.acegisecurity.context.SecurityContextHolder.*;
+import static org.springframework.security.core.context.SecurityContextHolder.*;
 
 /**
  * Creates a delegating {@link ExecutorService}

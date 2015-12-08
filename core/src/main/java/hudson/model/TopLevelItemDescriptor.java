@@ -25,7 +25,7 @@ package hudson.model;
 
 import hudson.ExtensionList;
 import jenkins.model.Jenkins;
-import org.acegisecurity.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.kohsuke.stapler.StaplerRequest;
 
 /**

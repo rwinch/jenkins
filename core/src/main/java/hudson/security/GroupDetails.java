@@ -23,7 +23,7 @@
  */
 package hudson.security;
 
-import org.acegisecurity.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Set;
 

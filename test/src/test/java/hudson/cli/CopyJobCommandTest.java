@@ -37,7 +37,7 @@ import hudson.security.SparseACL;
 import java.util.Collection;
 import java.util.Collections;
 import jenkins.model.Jenkins;
-import org.acegisecurity.acls.sid.PrincipalSid;
+import org.springframework.security.acls.domain.PrincipalSid;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import org.junit.Before;

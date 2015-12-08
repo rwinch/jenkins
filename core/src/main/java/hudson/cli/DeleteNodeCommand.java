@@ -25,7 +25,7 @@ package hudson.cli;
 
 import hudson.Extension;
 import hudson.model.Node;
-import org.acegisecurity.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import jenkins.model.Jenkins;
 import org.kohsuke.args4j.Argument;
 

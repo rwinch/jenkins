@@ -25,8 +25,8 @@ package hudson.security;
 
 import jenkins.model.Jenkins;
 import jenkins.security.ConfidentialStore;
-import org.acegisecurity.ui.rememberme.RememberMeServices;
-import org.acegisecurity.Authentication;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

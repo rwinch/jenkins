@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.io.File;
 import javax.annotation.CheckForNull;
-import org.acegisecurity.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 /**
  * Represents a grouping inherent to a kind of {@link Item}s.

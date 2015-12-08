@@ -5,10 +5,10 @@ import hudson.remoting.Channel;
 import hudson.util.Secret;
 import jenkins.model.Jenkins;
 import jenkins.security.MasterToSlaveCallable;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.AuthenticationException;
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
-import org.acegisecurity.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.dao.DataAccessException;
 
 import java.io.File;

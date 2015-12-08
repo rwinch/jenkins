@@ -30,8 +30,8 @@ import hudson.security.ACL;
 import jenkins.model.Jenkins;
 import jenkins.util.DirectedGraph;
 import jenkins.util.DirectedGraph.SCC;
-import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.Collection;

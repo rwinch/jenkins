@@ -31,7 +31,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import jenkins.security.QueueItemAuthenticator;
 import jenkins.security.QueueItemAuthenticatorDescriptor;
-import org.acegisecurity.Authentication;
+import org.springframework.security.core.Authentication;
 
 /**
  * Allows testing of anything related to {@link QueueItemAuthenticator}.

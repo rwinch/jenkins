@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
@@ -194,18 +195,16 @@ class DefaultBeanConfiguration extends GroovyObjectSupport implements BeanConfig
             else {
                 bd = new ChildBeanDefinition(parentName,clazz,cav, null);
             }
-            bd.setSingleton(singleton);
 		}
 		else {
             if(StringUtils.isBlank(parentName)) {
-                bd = new RootBeanDefinition(clazz,singleton);
+                bd = new RootBeanDefinition(clazz);
             }
             else {
                 bd = new ChildBeanDefinition(parentName,clazz, null,null);
-                bd.setSingleton(singleton);
             }
-
 		}
+        bd.setScope(getScope());
 		wrapper = new BeanWrapperImpl(bd);
 		return bd;
 	}
@@ -288,5 +287,7 @@ class DefaultBeanConfiguration extends GroovyObjectSupport implements BeanConfig
         }
     }
 
-
+    private String getScope() {
+        return singleton ? BeanDefinition.SCOPE_SINGLETON : BeanDefinition.SCOPE_PROTOTYPE;
+    }
 }

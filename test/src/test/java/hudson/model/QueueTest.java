@@ -91,10 +91,10 @@ import javax.servlet.http.HttpServletResponse;
 import jenkins.model.Jenkins;
 import jenkins.security.QueueItemAuthenticatorConfiguration;
 import jenkins.triggers.ReverseBuildTrigger;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.acls.sid.PrincipalSid;
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.acls.domain.PrincipalSid;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -594,7 +594,7 @@ public class QueueTest {
         r.assertBuildStatusSuccess(p.scheduleBuild2(0));
     }
 
-    private static Authentication alice = new UsernamePasswordAuthenticationToken("alice","alice",new GrantedAuthority[0]);
+    private static Authentication alice = new UsernamePasswordAuthenticationToken("alice","alice",Collections.<GrantedAuthority>emptyList());
 
 
     /**

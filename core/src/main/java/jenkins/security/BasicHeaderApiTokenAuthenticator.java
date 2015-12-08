@@ -2,8 +2,8 @@ package jenkins.security;
 
 import hudson.Extension;
 import hudson.model.User;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.dao.DataAccessException;
 
 import javax.servlet.ServletException;

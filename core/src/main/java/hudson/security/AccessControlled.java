@@ -24,7 +24,7 @@
 package hudson.security;
 
 import javax.annotation.Nonnull;
-import org.acegisecurity.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 /**
  * Object that has an {@link ACL}

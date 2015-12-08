@@ -2,7 +2,7 @@ package hudson.cli;
 
 import hudson.Extension;
 import jenkins.model.Jenkins;
-import org.acegisecurity.Authentication;
+import org.springframework.security.core.Authentication;
 import org.kohsuke.args4j.CmdLineException;
 
 /**

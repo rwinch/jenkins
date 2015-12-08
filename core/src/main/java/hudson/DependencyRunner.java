@@ -35,8 +35,8 @@ import java.util.Set;
 import java.util.Collection;
 import java.util.logging.Logger;
 
-import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * Runs a job on all projects in the order of dependencies

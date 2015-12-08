@@ -1,18 +1,18 @@
 /*
  * The MIT License
- * 
+ *
  * Copyright (c) 2004-2009, Sun Microsystems, Inc., Kohsuke Kawaguchi
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -37,17 +37,17 @@ import hudson.security.captcha.CaptchaSupport;
 import hudson.util.DescriptorList;
 import hudson.util.PluginServletFilter;
 import hudson.util.spring.BeanBuilder;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.AuthenticationManager;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.ui.rememberme.RememberMeServices;
-import static org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices.ACEGI_SECURITY_HASHED_REMEMBER_ME_COOKIE_KEY;
-import org.acegisecurity.userdetails.UserDetailsService;
-import org.acegisecurity.userdetails.UserDetails;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.RememberMeServices;
+import static org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.kohsuke.stapler.HttpResponse;
 import org.kohsuke.stapler.Stapler;
 import org.kohsuke.stapler.StaplerRequest;
@@ -150,12 +150,12 @@ public abstract class SecurityRealm extends AbstractDescribableImpl<SecurityReal
 
     /**
      * Returns the {@link IdStrategy} that should be used for turning
-     * {@link org.acegisecurity.userdetails.UserDetails#getUsername()} into an ID.
+     * {@link org.springframework.security.core.userdetails.UserDetails#getUsername()} into an ID.
      * Mostly this should be {@link IdStrategy.CaseInsensitive} but there may be occasions when either
      * {@link IdStrategy.CaseSensitive} or {@link IdStrategy.CaseSensitiveEmailAddress} are the correct approach.
      *
      * @return the {@link IdStrategy} that should be used for turning
-     *         {@link org.acegisecurity.userdetails.UserDetails#getUsername()} into an ID.
+     *         {@link org.springframework.security.core.userdetails.UserDetails#getUsername()} into an ID.
      * @since 1.566
      */
     public IdStrategy getUserIdStrategy() {
@@ -200,7 +200,7 @@ public abstract class SecurityRealm extends AbstractDescribableImpl<SecurityReal
      * <p>
      * {@link SecurityRealm} is a singleton resource in Hudson, and therefore
      * it's always configured through <tt>config.jelly</tt> and never with
-     * <tt>global.jelly</tt>. 
+     * <tt>global.jelly</tt>.
      */
     @Override
     public Descriptor<SecurityRealm> getDescriptor() {
@@ -212,7 +212,7 @@ public abstract class SecurityRealm extends AbstractDescribableImpl<SecurityReal
      * There's no need to override this, except for {@link LegacySecurityRealm}.
      */
     public String getAuthenticationGatewayUrl() {
-        return "j_acegi_security_check";
+        return "login";
     }
 
     /**
@@ -262,7 +262,7 @@ public abstract class SecurityRealm extends AbstractDescribableImpl<SecurityReal
      * @return
      *      never null.
      * @since 1.314
-     * @see #doLogout(StaplerRequest, StaplerResponse) 
+     * @see #doLogout(StaplerRequest, StaplerResponse)
      */
     protected String getPostLogOutUrl(StaplerRequest req, Authentication auth) {
         return req.getContextPath()+"/";
@@ -297,7 +297,7 @@ public abstract class SecurityRealm extends AbstractDescribableImpl<SecurityReal
         SecurityContextHolder.clearContext();
 
         // reset remember-me cookie
-        Cookie cookie = new Cookie(ACEGI_SECURITY_HASHED_REMEMBER_ME_COOKIE_KEY,"");
+        Cookie cookie = new Cookie(SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY,"");
         cookie.setPath(req.getContextPath().length()>0 ? req.getContextPath() : "/");
         rsp.addCookie(cookie);
 
@@ -431,7 +431,7 @@ public abstract class SecurityRealm extends AbstractDescribableImpl<SecurityReal
         case 1:
             return type.cast(m.values().iterator().next());
         default:
-            throw new IllegalArgumentException("Multiple beans of "+type+" are defined: "+m);            
+            throw new IllegalArgumentException("Multiple beans of "+type+" are defined: "+m);
         }
     }
 
@@ -468,7 +468,7 @@ public abstract class SecurityRealm extends AbstractDescribableImpl<SecurityReal
      */
     public Filter createFilter(FilterConfig filterConfig) {
         LOGGER.entering(SecurityRealm.class.getName(), "createFilter");
-        
+
         Binding binding = new Binding();
         SecurityComponents sc = getSecurityComponents();
         binding.setVariable("securityComponents", sc);
@@ -537,7 +537,7 @@ public abstract class SecurityRealm extends AbstractDescribableImpl<SecurityReal
      * <p>
      * None of the fields are ever null.
      *
-     * @see SecurityRealm#createSecurityComponents() 
+     * @see SecurityRealm#createSecurityComponents()
      */
     public static final class SecurityComponents {
         public final AuthenticationManager manager;
@@ -570,8 +570,6 @@ public abstract class SecurityRealm extends AbstractDescribableImpl<SecurityReal
         @SuppressWarnings("deprecation")
         private static RememberMeServices createRememberMeService(UserDetailsService uds) {
             // create our default TokenBasedRememberMeServices, which depends on the availability of the secret key
-            TokenBasedRememberMeServices2 rms = new TokenBasedRememberMeServices2();
-            rms.setUserDetailsService(uds);
             /*
                 TokenBasedRememberMeServices needs to be used in conjunction with RememberMeAuthenticationProvider,
                 and both needs to use the same key (this is a reflection of a poor design in AcgeiSecurity, if you ask me)
@@ -582,7 +580,7 @@ public abstract class SecurityRealm extends AbstractDescribableImpl<SecurityReal
 
                 So we keep this here.
              */
-            rms.setKey(Jenkins.getInstance().getSecretKey());
+            TokenBasedRememberMeServices2 rms = new TokenBasedRememberMeServices2(Jenkins.getInstance().getSecretKey(), uds);
             rms.setParameter("remember_me"); // this is the form field name in login.jelly
             return rms;
         }
@@ -611,5 +609,5 @@ public abstract class SecurityRealm extends AbstractDescribableImpl<SecurityReal
      * {@link GrantedAuthority} that represents the built-in "authenticated" role, which is granted to
      * anyone non-anonymous.
      */
-    public static final GrantedAuthority AUTHENTICATED_AUTHORITY = new GrantedAuthorityImpl("authenticated");
+    public static final GrantedAuthority AUTHENTICATED_AUTHORITY = new SimpleGrantedAuthority("authenticated");
 }

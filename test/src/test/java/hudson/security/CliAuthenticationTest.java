@@ -11,7 +11,7 @@ import hudson.cli.ClientAuthenticationCache;
 import hudson.cli.LoginCommand;
 import hudson.cli.LogoutCommand;
 import jenkins.model.Jenkins;
-import org.acegisecurity.Authentication;
+import org.springframework.security.core.Authentication;
 import org.apache.commons.io.input.NullInputStream;
 import org.junit.Rule;
 import org.junit.Test;

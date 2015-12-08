@@ -36,7 +36,7 @@ import hudson.util.DescriptorList;
 import hudson.util.EditDistance;
 import hudson.util.XStream2;
 import jenkins.model.Jenkins;
-import org.acegisecurity.Authentication;
+import org.springframework.security.core.Authentication;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;

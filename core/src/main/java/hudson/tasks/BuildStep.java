@@ -47,7 +47,7 @@ import java.util.AbstractList;
 import java.util.Iterator;
 import java.util.WeakHashMap;
 import jenkins.security.QueueItemAuthenticator;
-import org.acegisecurity.Authentication;
+import org.springframework.security.core.Authentication;
 
 import javax.annotation.Nonnull;
 

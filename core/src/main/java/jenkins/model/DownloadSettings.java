@@ -34,7 +34,7 @@ import hudson.model.UpdateSite;
 import hudson.util.FormValidation;
 import java.io.IOException;
 import net.sf.json.JSONObject;
-import org.acegisecurity.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.HttpResponse;

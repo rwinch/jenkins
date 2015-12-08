@@ -1,14 +1,14 @@
 package hudson.security
 
 import jenkins.model.Jenkins
-import org.acegisecurity.AuthenticationException
-import org.acegisecurity.BadCredentialsException
-import org.acegisecurity.GrantedAuthority
-import org.acegisecurity.GrantedAuthorityImpl
-import org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices
-import org.acegisecurity.userdetails.User
-import org.acegisecurity.userdetails.UserDetails
-import org.acegisecurity.userdetails.UsernameNotFoundException
+import org.springframework.security.core.AuthenticationException
+import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices
+import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import com.gargoylesoftware.htmlunit.util.Cookie
 import org.junit.After
 import org.junit.Before
@@ -94,14 +94,14 @@ class TokenBasedRememberMeServices2Test {
     }
 
     private Cookie getRememberMeCookie(JenkinsRule.WebClient wc) {
-        wc.cookieManager.getCookie(TokenBasedRememberMeServices2.ACEGI_SECURITY_HASHED_REMEMBER_ME_COOKIE_KEY)
+        wc.cookieManager.getCookie(TokenBasedRememberMeServices2.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY)
     }
 
     private class InvalidUserWhenLoggingBackInRealm extends AbstractPasswordBasedSecurityRealm {
         @Override
         protected UserDetails authenticate(String username, String password) throws AuthenticationException {
             if (username==password)
-                return new User(username,password,true,[new GrantedAuthorityImpl("myteam")] as GrantedAuthority[])
+                return new User(username,password,true,[new SimpleGrantedAuthority("myteam")] as GrantedAuthority[])
             throw new BadCredentialsException(username);
         }
 

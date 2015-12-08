@@ -26,7 +26,7 @@ package hudson.security;
 import hudson.model.Descriptor;
 import jenkins.model.Jenkins;
 import hudson.Extension;
-import org.acegisecurity.acls.sid.GrantedAuthoritySid;
+import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.kohsuke.stapler.StaplerRequest;
 import net.sf.json.JSONObject;
 

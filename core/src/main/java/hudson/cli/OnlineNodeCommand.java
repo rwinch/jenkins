@@ -28,7 +28,7 @@ import hudson.Extension;
 import hudson.model.Computer;
 import jenkins.model.Jenkins;
 
-import org.acegisecurity.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.kohsuke.args4j.Argument;
 
 import java.util.logging.Logger;

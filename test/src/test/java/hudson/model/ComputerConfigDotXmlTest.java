@@ -41,8 +41,8 @@ import java.io.OutputStream;
 import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 
-import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

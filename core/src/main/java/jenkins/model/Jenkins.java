@@ -201,14 +201,14 @@ import jenkins.slaves.WorkspaceLocator;
 import jenkins.util.Timer;
 import jenkins.util.io.FileBoolean;
 import net.sf.json.JSONObject;
-import org.acegisecurity.AccessDeniedException;
-import org.acegisecurity.AcegiSecurityException;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.anonymous.AnonymousAuthenticationToken;
-import org.acegisecurity.ui.AbstractProcessingFilter;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.util.UrlUtils;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.apache.commons.jelly.JellyException;
 import org.apache.commons.jelly.Script;
 import org.apache.commons.logging.LogFactory;
@@ -2184,7 +2184,7 @@ public class Jenkins extends AbstractCIBase implements DirectlyModifiableTopLeve
             }
         } catch (ServletException e) {
             // for binary compatibility, this method cannot throw a checked exception
-            throw new AcegiSecurityException("Failed to configure filter",e) {};
+            throw new IllegalStateException("Failed to configure filter",e);
         }
     }
 
@@ -3208,7 +3208,7 @@ public class Jenkins extends AbstractCIBase implements DirectlyModifiableTopLeve
             return;
         }
 
-        String url = AbstractProcessingFilter.obtainFullRequestUrl(req);
+        String url = UrlUtils.buildFullRequestUrl(req);
         if(url!=null) {
             // if the login redirect is initiated by Acegi
             // this should send the user back to where s/he was from.
@@ -4295,7 +4295,7 @@ public class Jenkins extends AbstractCIBase implements DirectlyModifiableTopLeve
     static {
         try {
             ANONYMOUS = new AnonymousAuthenticationToken(
-                    "anonymous", "anonymous", new GrantedAuthority[]{new GrantedAuthorityImpl("anonymous")});
+                    "anonymous", "anonymous", AuthorityUtils.createAuthorityList("anonymous"));
             XSTREAM = XSTREAM2 = new XStream2();
 
             XSTREAM.alias("jenkins", Jenkins.class);

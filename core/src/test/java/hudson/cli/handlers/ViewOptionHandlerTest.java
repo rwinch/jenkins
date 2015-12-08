@@ -34,7 +34,7 @@ import hudson.model.View;
 
 import jenkins.model.Jenkins;
 
-import org.acegisecurity.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

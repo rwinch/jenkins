@@ -3,9 +3,9 @@ package jenkins.security;
 import hudson.model.User;
 import hudson.security.SecurityRealm;
 import hudson.security.UserMayOrMayNotExistException;
-import org.acegisecurity.userdetails.UserDetails;
-import org.acegisecurity.userdetails.UserDetailsService;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.dao.DataAccessException;
 
 import static java.util.Collections.*;
@@ -43,7 +43,7 @@ public class ImpersonatingUserDetailsService implements UserDetailsService {
         if (u!=null) {
             LastGrantedAuthoritiesProperty p = u.getProperty(LastGrantedAuthoritiesProperty.class);
             if (p!=null)
-                return new org.acegisecurity.userdetails.User(username,"",true,true,true,true,
+                return new org.springframework.security.core.userdetails.User(username,"",true,true,true,true,
                         p.getAuthorities());
         }
 

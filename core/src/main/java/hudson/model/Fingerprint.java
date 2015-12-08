@@ -72,8 +72,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
-import org.acegisecurity.AccessDeniedException;
-import org.acegisecurity.Authentication;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.xmlpull.v1.XmlPullParserException;
 
 /**

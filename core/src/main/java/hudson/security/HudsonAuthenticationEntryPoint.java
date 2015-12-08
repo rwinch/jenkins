@@ -1,18 +1,18 @@
 /*
  * The MIT License
- * 
+ *
  * Copyright (c) 2004-2009, Sun Microsystems, Inc., Kohsuke Kawaguchi
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,13 +26,11 @@ package hudson.security;
 import hudson.Functions;
 
 import com.google.common.base.Strings;
-import org.acegisecurity.AuthenticationException;
-import org.acegisecurity.InsufficientAuthenticationException;
-import org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
@@ -54,51 +52,51 @@ import java.text.MessageFormat;
  *
  * <p>
  * The page that programs see is entirely white, and it auto-redirects,
- * so humans wouldn't notice it. 
+ * so humans wouldn't notice it.
  *
  * @author Kohsuke Kawaguchi
  */
-public class HudsonAuthenticationEntryPoint extends AuthenticationProcessingFilterEntryPoint {
-    @Override
-    public void commence(ServletRequest request, ServletResponse response, AuthenticationException reason) throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse rsp = (HttpServletResponse) response;
+public class HudsonAuthenticationEntryPoint implements AuthenticationEntryPoint {
+    private String loginFormUrl;
 
-        String requestedWith = req.getHeader("X-Requested-With");
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException reason) throws IOException, ServletException {
+
+        String requestedWith = request.getHeader("X-Requested-With");
         if("XMLHttpRequest".equals(requestedWith)) {
             // container authentication normally relies on session attribute to
             // remember where the user came from, so concurrent AJAX requests
             // often ends up sending users back to AJAX pages after successful login.
             // this is not desirable, so don't redirect AJAX requests to the user.
             // this header value is sent from Prototype.
-            rsp.sendError(SC_FORBIDDEN);
+            response.sendError(SC_FORBIDDEN);
         } else {
             // give the opportunity to include the target URL
-            String uriFrom = req.getRequestURI();
-            if(!Strings.isNullOrEmpty(req.getQueryString())) uriFrom += "?" + req.getQueryString();
-            String loginForm = req.getContextPath()+getLoginFormUrl();
+            String uriFrom = request.getRequestURI();
+            if(!Strings.isNullOrEmpty(request.getQueryString())) uriFrom += "?" + request.getQueryString();
+            String loginForm = request.getContextPath()+getLoginFormUrl();
             loginForm = MessageFormat.format(loginForm, URLEncoder.encode(uriFrom,"UTF-8"));
-            req.setAttribute("loginForm", loginForm);
+            request.setAttribute("loginForm", loginForm);
 
-            rsp.setStatus(SC_FORBIDDEN);
-            rsp.setContentType("text/html;charset=UTF-8");
+            response.setStatus(SC_FORBIDDEN);
+            response.setContentType("text/html;charset=UTF-8");
 
-            Functions.advertiseHeaders(rsp);
+            Functions.advertiseHeaders(response);
 
             AccessDeniedException2 cause = null;
             // report the diagnosis information if possible
             if (reason instanceof InsufficientAuthenticationException) {
                 if (reason.getCause() instanceof AccessDeniedException2) {
                     cause = (AccessDeniedException2) reason.getCause();
-                    cause.reportAsHeaders(rsp);
+                    cause.reportAsHeaders(response);
                 }
             }
 
             PrintWriter out;
             try {
-                out = new PrintWriter(new OutputStreamWriter(rsp.getOutputStream()));
+                out = new PrintWriter(new OutputStreamWriter(response.getOutputStream()));
             } catch (IllegalStateException e) {
-                out = rsp.getWriter();
+                out = response.getWriter();
             }
             out.printf(
                 "<html><head>" +
@@ -122,5 +120,13 @@ public class HudsonAuthenticationEntryPoint extends AuthenticationProcessingFilt
                 out.print("                              ");
             out.close();
         }
+    }
+
+    public String getLoginFormUrl() {
+        return loginFormUrl;
+    }
+
+    public void setLoginFormUrl(String loginFormUrl) {
+        this.loginFormUrl = loginFormUrl;
     }
 }

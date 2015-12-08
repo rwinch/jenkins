@@ -170,12 +170,12 @@ import jenkins.model.JenkinsLocationConfiguration;
 import net.sf.json.JSONObject;
 import net.sourceforge.htmlunit.corejs.javascript.Context;
 import net.sourceforge.htmlunit.corejs.javascript.ContextFactory;
-import org.acegisecurity.AuthenticationException;
-import org.acegisecurity.BadCredentialsException;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.userdetails.UserDetails;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
@@ -863,10 +863,10 @@ public class JenkinsRule implements TestRule, MethodRule, RootAction {
             Set<String> groups = groupsByUser.get(username);
             if (groups != null) {
                 for (String g : groups) {
-                    auths.add(new GrantedAuthorityImpl(g));
+                    auths.add(new SimpleGrantedAuthority(g));
                 }
             }
-            return new org.acegisecurity.userdetails.User(username,"",true,true,true,true, auths.toArray(new GrantedAuthority[auths.size()]));
+            return new org.springframework.security.core.userdetails.User(username,"",true,true,true,true, auths);
         }
 
         @Override

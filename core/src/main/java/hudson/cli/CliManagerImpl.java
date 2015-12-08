@@ -26,9 +26,9 @@ package hudson.cli;
 import hudson.remoting.CallableFilter;
 import hudson.remoting.Channel;
 import hudson.remoting.Pipe;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.InputStream;
 import java.io.OutputStream;

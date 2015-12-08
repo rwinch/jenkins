@@ -24,9 +24,9 @@
 /*
     Configure Hudson's own user database as the authentication realm.
 */
-import org.acegisecurity.providers.ProviderManager
-import org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider
-import org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider
+import org.springframework.security.authentication.ProviderManager
+import org.springframework.security.authentication.AnonymousAuthenticationProvider
+import org.springframework.security.authentication.RememberMeAuthenticationProvider
 import jenkins.model.Jenkins
 
 authenticationManager(ProviderManager) {

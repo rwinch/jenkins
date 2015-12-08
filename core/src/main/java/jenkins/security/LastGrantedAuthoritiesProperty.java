@@ -8,16 +8,17 @@ import hudson.model.UserPropertyDescriptor;
 import hudson.security.SecurityRealm;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.kohsuke.stapler.StaplerRequest;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,14 +45,14 @@ public class LastGrantedAuthoritiesProperty extends UserProperty {
     	return this;
     }
 
-    public GrantedAuthority[] getAuthorities() {
+    public Collection<GrantedAuthority> getAuthorities() {
         String[] roles = this.roles;    // capture to a variable for immutability
 
-        GrantedAuthority[] r = new GrantedAuthority[roles==null ? 1 : roles.length+1];
-        r[0] = SecurityRealm.AUTHENTICATED_AUTHORITY;
+        List<GrantedAuthority> r = new ArrayList<GrantedAuthority>();
+        r.add(SecurityRealm.AUTHENTICATED_AUTHORITY);
         if (roles != null) {
-            for (int i = 1; i < r.length; i++) {
-                r[i] = new GrantedAuthorityImpl(roles[i - 1]);
+            for (int i = 1; i < roles.length; i++) {
+                r.add(new SimpleGrantedAuthority(roles[i - 1]));
             }
         }
         return r;

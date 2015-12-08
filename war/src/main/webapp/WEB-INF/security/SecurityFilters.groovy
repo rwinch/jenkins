@@ -30,14 +30,14 @@ import hudson.security.AccessDeniedHandlerImpl
 import hudson.security.AuthenticationProcessingFilter2
 import hudson.security.BasicAuthenticationFilter
 import hudson.security.ChainedServletFilter
-import hudson.security.UnwrapSecurityExceptionFilter
 import hudson.security.HudsonAuthenticationEntryPoint
 import jenkins.security.BasicHeaderProcessor
-import org.acegisecurity.providers.anonymous.AnonymousProcessingFilter
+import org.springframework.security.authentication.AnonymousAuthenticationFilter
 import jenkins.security.ExceptionTranslationFilter
-import org.acegisecurity.ui.basicauth.BasicProcessingFilter
-import org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint
-import org.acegisecurity.ui.rememberme.RememberMeProcessingFilter
+import org.springframework.security.authentication.www.BasicAuthenticationFilter
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.authentication.www.BasicAuthenticationEntryPoint
+import org.springframework.security.authentication.rememberme.RememberMeAuthenticationFilter
 import hudson.security.HttpSessionContextIntegrationFilter2
 import hudson.security.SecurityRealm
 import hudson.security.NoopFilter
@@ -46,17 +46,12 @@ import jenkins.security.ApiTokenFilter
 // providers that apply to both patterns
 def commonProviders() {
     return [
-        bean(AnonymousProcessingFilter) {
-            key = "anonymous" // must match with the AnonymousProvider
-            userAttribute = "anonymous,"
-        },
-        bean(ExceptionTranslationFilter) {
-            accessDeniedHandler = new AccessDeniedHandlerImpl()
-            authenticationEntryPoint = bean(HudsonAuthenticationEntryPoint) {
+        bean(AnonymousAuthenticationFilter, "anonymous", "anonymous", AuthorityUtils.createAuthorityList('ROLE_ANONYMOUS')),
+        bean(ExceptionTranslationFilter,bean(HudsonAuthenticationEntryPoint) {
                 loginFormUrl = '/'+securityRealm.getLoginUrl()+"?from={0}";
-            }
+            }) {
+            accessDeniedHandler = new AccessDeniedHandlerImpl()
         },
-        bean(UnwrapSecurityExceptionFilter)
     ]
 }
 
@@ -77,7 +72,7 @@ filter(ChainedServletFilter) {
             // respond with 401 with basic auth request, instead of redirecting the user to the login page,
             // since users of basic auth tends to be a program and won't see the redirection to the form
             // page as a failure
-            authenticationEntryPoint = bean(BasicProcessingFilterEntryPoint) {
+            authenticationEntryPoint = bean(BasicAuthenticationEntryPoint) {
                 realmName = "Jenkins"
             }
         },
@@ -86,12 +81,9 @@ filter(ChainedServletFilter) {
             rememberMeServices = securityComponents.rememberMe
             authenticationFailureUrl = "/loginError"
             defaultTargetUrl = "/"
-            filterProcessesUrl = "/j_acegi_security_check"
+            filterProcessesUrl = "/login"
         },
-        bean(RememberMeProcessingFilter) {
-            rememberMeServices = securityComponents.rememberMe
-            authenticationManager = securityComponents.manager
-        },
+        bean(RememberMeAuthenticationFilter,securityComponents.manager,securityComponents.rememberMe),
     ] + commonProviders()
 }
 

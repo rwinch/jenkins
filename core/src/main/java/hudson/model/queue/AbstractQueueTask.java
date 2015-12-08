@@ -28,7 +28,7 @@ import hudson.model.Queue;
 import hudson.model.Queue.Task;
 import hudson.security.ACL;
 import hudson.security.AccessControlled;
-import org.acegisecurity.Authentication;
+import org.springframework.security.core.Authentication;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;

@@ -12,7 +12,7 @@ import hudson.model.Queue.Task;
 import java.util.Calendar;
 import java.util.Collections;
 import javax.annotation.CheckForNull;
-import org.acegisecurity.Authentication;
+import org.springframework.security.core.Authentication;
 
 /**
  * Extension point to run {@link hudson.model.Queue.Executable}s under a specific identity for better access control.

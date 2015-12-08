@@ -25,7 +25,7 @@ package hudson.model;
 
 import hudson.model.queue.QueueTaskFuture;
 import hudson.security.AccessDeniedException2;
-import org.acegisecurity.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import hudson.security.HudsonPrivateSecurityRealm;
 import hudson.security.GlobalMatrixAuthorizationStrategy;
 import java.util.Collections;

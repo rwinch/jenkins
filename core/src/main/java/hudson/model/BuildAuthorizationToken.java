@@ -33,7 +33,7 @@ import org.kohsuke.stapler.StaplerResponse;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import jenkins.security.ApiTokenProperty;
-import org.acegisecurity.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.kohsuke.stapler.HttpResponses;
 
 /**

@@ -27,7 +27,7 @@ import hudson.model.User;
 import jenkins.model.Jenkins;
 import hudson.util.Scrambler;
 import jenkins.security.ApiTokenProperty;
-import org.acegisecurity.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
